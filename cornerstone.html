@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cornerstone — Concept Demo</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    background: #fff; color: #000;
+    -webkit-font-smoothing: antialiased;
+    padding: 32px 20px 48px;
+  }
+  .wrap { max-width: 430px; margin: 0 auto; }
+  header { text-align: center; margin-bottom: 28px; }
+  .wordmark {
+    font-size: 15px; font-weight: 700;
+    letter-spacing: 0.42em; text-transform: uppercase;
+  }
+  .wordmark-sub {
+    margin-top: 8px; font-size: 13px; color: #555; line-height: 1.5;
+  }
+
+  /* Step tabs */
+  .tabs { display: flex; border: 1px solid #000; margin-bottom: 28px; }
+  .tab {
+    flex: 1; padding: 11px 4px; text-align: center;
+    font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase;
+    background: #fff; color: #000; border: none; cursor: pointer;
+    border-right: 1px solid #000;
+  }
+  .tab:last-child { border-right: none; }
+  .tab.active { background: #000; color: #fff; }
+
+  .screen { display: none; }
+  .screen.active { display: block; }
+
+  .kicker {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.22em;
+    text-transform: uppercase; color: #777; margin-bottom: 10px;
+  }
+  h1 { font-size: 27px; font-weight: 700; letter-spacing: -0.01em; line-height: 1.15; margin-bottom: 10px; }
+  .lede { font-size: 15px; line-height: 1.55; color: #333; margin-bottom: 24px; }
+
+  .card { border: 1px solid #000; padding: 20px; margin-bottom: 16px; }
+  .card.plain { border-color: #ddd; }
+  .name { font-size: 19px; font-weight: 700; }
+  .meta { font-size: 13px; color: #555; margin-top: 3px; line-height: 1.5; }
+
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+  .chip {
+    border: 1px solid #000; border-radius: 999px;
+    padding: 6px 12px; font-size: 12.5px; font-weight: 500;
+  }
+
+  .stats { display: flex; gap: 12px; margin-bottom: 16px; }
+  .stat { flex: 1; border: 1px solid #ddd; padding: 16px 14px; text-align: center; }
+  .stat .num { font-size: 24px; font-weight: 700; }
+  .stat .lbl { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: #777; margin-top: 4px; line-height: 1.4; }
+
+  /* Bill options */
+  .bill {
+    display: flex; justify-content: space-between; align-items: center;
+    width: 100%; border: 1px solid #000; background: #fff;
+    padding: 16px; margin-bottom: 10px; cursor: pointer; text-align: left;
+    font-family: inherit;
+  }
+  .bill .b-name { font-size: 15px; font-weight: 600; }
+  .bill .b-sub { font-size: 12.5px; color: #666; margin-top: 2px; }
+  .bill .b-amt { font-size: 17px; font-weight: 700; }
+  .bill.selected { background: #000; color: #fff; }
+  .bill.selected .b-sub { color: #bbb; }
+
+  /* Buttons */
+  .btn {
+    display: block; width: 100%; padding: 16px;
+    background: #000; color: #fff; border: 1px solid #000;
+    font-family: inherit; font-size: 13px; font-weight: 700;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    cursor: pointer; text-align: center;
+  }
+  .btn:disabled { background: #fff; color: #aaa; border-color: #ddd; cursor: default; }
+  .btn.ghost { background: #fff; color: #000; margin-top: 10px; }
+  .btn.done { background: #000; color: #fff; }
+  .next { margin-top: 22px; }
+
+  /* Receipt */
+  .receipt { border: 1px solid #000; padding: 22px 20px; margin-bottom: 16px; }
+  .r-row {
+    display: flex; justify-content: space-between; gap: 16px;
+    padding: 10px 0; border-bottom: 1px solid #eee; font-size: 14.5px;
+  }
+  .r-row:last-of-type { border-bottom: none; }
+  .r-row .k { color: #666; }
+  .r-row .v { font-weight: 600; text-align: right; }
+  .r-total { border-top: 2px solid #000; margin-top: 6px; padding-top: 14px; }
+  .r-total .v { font-size: 18px; font-weight: 700; }
+
+  .quote { font-size: 15.5px; line-height: 1.55; font-style: italic; }
+  .quote-by { font-size: 13px; color: #555; margin-top: 8px; font-style: normal; }
+
+  .tax-note { font-size: 13px; color: #555; line-height: 1.55; margin: 12px 0 14px; }
+  .tax-result {
+    display: none; border: 1px solid #000; padding: 16px;
+    font-size: 14px; line-height: 1.6; margin-bottom: 4px;
+  }
+  .tax-result.show { display: block; }
+  .tax-result .stamp {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .tagline {
+    text-align: center; font-size: 16.5px; font-weight: 600;
+    line-height: 1.55; margin: 30px 0 6px;
+  }
+  footer {
+    text-align: center; font-size: 12px; color: #999;
+    margin-top: 26px; line-height: 1.6;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="wordmark">Cornerstone</div>
+    <div class="wordmark-sub">Skills become bills paid, and a record that stays.</div>
+  </header>
+
+  <nav class="tabs">
+    <button class="tab active" data-go="1">1 · Resume</button>
+    <button class="tab" data-go="2">2 · Exchange</button>
+    <button class="tab" data-go="3">3 · Record</button>
+  </nav>
+
+  <!-- SCREEN 1 — THE RESUME -->
+  <section class="screen active" id="screen-1">
+    <div class="kicker">Step one</div>
+    <h1>The Resume</h1>
+    <p class="lede">A student puts up the resume they are building, with the skills they already have. People and employers find them.</p>
+
+    <div class="card">
+      <div class="name">Yuki T.</div>
+      <div class="meta">International student · New York University<br>Computer Science, class of 2028</div>
+      <div class="chips">
+        <span class="chip">Python tutoring</span>
+        <span class="chip">Japanese conversation</span>
+        <span class="chip">Math, up to calculus</span>
+        <span class="chip">Data entry</span>
+      </div>
+    </div>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="num">6</div>
+        <div class="lbl">References earned</div>
+      </div>
+      <div class="stat">
+        <div class="num">$1,840</div>
+        <div class="lbl">Bills covered so far</div>
+      </div>
+    </div>
+
+    <button class="btn next" data-go="2">Next · See the exchange</button>
+  </section>
+
+  <!-- SCREEN 2 — THE EXCHANGE -->
+  <section class="screen" id="screen-2">
+    <div class="kicker">Step two</div>
+    <h1>The Exchange</h1>
+    <p class="lede">The work is paid as a bill the student nominates. No cash changes hands.</p>
+
+    <div class="card">
+      <div class="name">Maria's Café, Brooklyn</div>
+      <div class="meta">Needs: a simple website with online ordering<br>Yuki can build it this week.</div>
+    </div>
+
+    <p class="lede" style="margin-bottom:12px;">The café picks one of Yuki's bills to cover:</p>
+
+    <button class="bill" data-name="Rent" data-amt="650">
+      <span><span class="b-name">Rent</span><div class="b-sub">November, paid to the landlord</div></span>
+      <span class="b-amt">$650</span>
+    </button>
+    <button class="bill" data-name="Utilities" data-amt="90">
+      <span><span class="b-name">Utilities</span><div class="b-sub">Electric bill, paid to the provider</div></span>
+      <span class="b-amt">$90</span>
+    </button>
+    <button class="bill" data-name="Grocery gift card" data-amt="100">
+      <span><span class="b-name">Grocery gift card</span><div class="b-sub">Food for the month</div></span>
+      <span class="b-amt">$100</span>
+    </button>
+
+    <button class="btn next" id="coverBtn" disabled>Cover this bill</button>
+  </section>
+
+  <!-- SCREEN 3 — THE RECORD -->
+  <section class="screen" id="screen-3">
+    <div class="kicker">Step three</div>
+    <h1>The Record</h1>
+    <p class="lede">Every exchange is documented, and every job ends as a reference on that resume.</p>
+
+    <div class="receipt">
+      <div class="r-row"><span class="k">Service</span><span class="v">Website built for Maria's Café</span></div>
+      <div class="r-row"><span class="k">Bill covered</span><span class="v" id="rBill">Rent</span></div>
+      <div class="r-row"><span class="k">Paid to</span><span class="v" id="rPaidTo">The landlord, directly</span></div>
+      <div class="r-row"><span class="k">Cash to student</span><span class="v">$0</span></div>
+      <div class="r-row r-total"><span class="k">Value documented</span><span class="v" id="rAmt">$650</span></div>
+    </div>
+
+    <div class="card plain">
+      <p class="quote">"She built exactly what we needed, on time. I would hire her again in a second."</p>
+      <div class="quote-by">— Maria, Maria's Café · Reference #7 on Yuki's resume</div>
+    </div>
+
+    <div class="card">
+      <div class="name" style="font-size:16px;">The tax record</div>
+      <p class="tax-note">The café does no paperwork elsewhere. Cornerstone documents the exchange, and one click files the tax record, 1099-ready, with the value above.</p>
+      <button class="btn" id="taxBtn">File the tax record</button>
+      <div class="tax-result" id="taxResult">
+        <div class="stamp">Filed · In the app</div>
+        Tax record generated for Maria's Café: <strong id="taxAmt">$650</strong> in documented payment in kind (<span id="taxBill">Rent</span>), 1099-ready, stored with this exchange. Both sides can download it any time.
+      </div>
+    </div>
+
+    <p class="tagline">The student lives, the resume grows, and the taxes get paid, so both sides contribute to the economy.</p>
+
+    <button class="btn ghost" data-go="1">Start again</button>
+  </section>
+
+  <footer>
+    Cornerstone · Concept demo<br>
+    All people, businesses, and numbers on this page are sample data.
+  </footer>
+
+</div>
+
+<script>
+  var chosen = { name: "Rent", amt: 650, paidTo: "The landlord, directly" };
+  var paidToMap = {
+    "Rent": "The landlord, directly",
+    "Utilities": "The utility provider, directly",
+    "Grocery gift card": "The grocery store, directly"
+  };
+
+  function go(n) {
+    document.querySelectorAll(".screen").forEach(function (s) { s.classList.remove("active"); });
+    document.getElementById("screen-" + n).classList.add("active");
+    document.querySelectorAll(".tab").forEach(function (t) {
+      t.classList.toggle("active", t.getAttribute("data-go") === String(n));
+    });
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  document.querySelectorAll("[data-go]").forEach(function (el) {
+    el.addEventListener("click", function () { go(el.getAttribute("data-go")); });
+  });
+
+  var coverBtn = document.getElementById("coverBtn");
+  document.querySelectorAll(".bill").forEach(function (b) {
+    b.addEventListener("click", function () {
+      document.querySelectorAll(".bill").forEach(function (x) { x.classList.remove("selected"); });
+      b.classList.add("selected");
+      chosen.name = b.getAttribute("data-name");
+      chosen.amt = parseInt(b.getAttribute("data-amt"), 10);
+      chosen.paidTo = paidToMap[chosen.name];
+      coverBtn.disabled = false;
+      coverBtn.textContent = "Cover this bill · $" + chosen.amt;
+    });
+  });
+
+  coverBtn.addEventListener("click", function () {
+    document.getElementById("rBill").textContent = chosen.name;
+    document.getElementById("rPaidTo").textContent = chosen.paidTo;
+    document.getElementById("rAmt").textContent = "$" + chosen.amt;
+    document.getElementById("taxAmt").textContent = "$" + chosen.amt;
+    document.getElementById("taxBill").textContent = chosen.name;
+    // Reset the tax filing state for the new exchange
+    var btn = document.getElementById("taxBtn");
+    btn.disabled = false;
+    btn.textContent = "File the tax record";
+    btn.classList.remove("done");
+    document.getElementById("taxResult").classList.remove("show");
+    go(3);
+  });
+
+  document.getElementById("taxBtn").addEventListener("click", function () {
+    var btn = this;
+    btn.disabled = true;
+    btn.textContent = "Tax record filed ✓";
+    btn.classList.add("done");
+    document.getElementById("taxResult").classList.add("show");
+  });
+</script>
+</body>
+</html>
