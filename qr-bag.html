@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nagham — I am a filmmaker</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    background: #fff;
+    color: #111;
+    line-height: 1.5;
+    padding: 28px 20px 40px;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    border: 1.5px solid #111;
+    border-radius: 999px;
+    padding: 5px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .badge .check {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px; height: 16px;
+    background: #111;
+    color: #fff;
+    border-radius: 50%;
+    font-size: 11px;
+    line-height: 1;
+  }
+  h1 {
+    font-size: 42px;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    line-height: 1.05;
+    margin: 22px 0 6px;
+    text-transform: uppercase;
+  }
+  .name {
+    font-size: 19px;
+    font-weight: 600;
+  }
+  .place {
+    font-size: 15px;
+    color: #555;
+    margin-bottom: 18px;
+  }
+  .about {
+    font-size: 16px;
+    color: #222;
+    border-top: 1px solid #e5e5e5;
+    padding-top: 18px;
+    margin-bottom: 24px;
+  }
+  h2 {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #777;
+    margin-bottom: 10px;
+  }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
+  .chip {
+    border: 1px solid #111;
+    border-radius: 999px;
+    padding: 6px 14px;
+    font-size: 14px;
+    font-weight: 500;
+  }
+  .referral {
+    border-left: 3px solid #111;
+    padding: 2px 0 2px 14px;
+    margin-bottom: 16px;
+  }
+  .referral p { font-size: 15px; color: #222; }
+  .referral .who { font-size: 13px; color: #777; margin-top: 2px; }
+  .scans {
+    background: #111;
+    color: #fff;
+    border-radius: 14px;
+    padding: 20px;
+    margin: 28px 0;
+    text-align: center;
+  }
+  .scans .num { font-size: 40px; font-weight: 800; line-height: 1; }
+  .scans .label { font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; margin-top: 6px; color: #ccc; }
+  .scans .note { font-size: 13px; color: #aaa; margin-top: 10px; }
+  .hire {
+    display: block;
+    width: 100%;
+    background: #111;
+    color: #fff;
+    border: none;
+    border-radius: 999px;
+    padding: 16px;
+    font-size: 17px;
+    font-weight: 700;
+    cursor: pointer;
+    letter-spacing: 0.02em;
+  }
+  .hire:active { opacity: 0.85; }
+  .toast {
+    display: none;
+    text-align: center;
+    font-size: 13px;
+    color: #777;
+    margin-top: 12px;
+  }
+  footer {
+    margin-top: 36px;
+    padding-top: 16px;
+    border-top: 1px solid #e5e5e5;
+    font-size: 12px;
+    color: #999;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+
+  <span class="badge"><span class="check">&#10003;</span> Verified &mdash; background checked</span>
+
+  <h1>I am a filmmaker</h1>
+  <div class="name">Nagham</div>
+  <div class="place">New York City</div>
+
+  <p class="about">Director who works on sets all over New York &mdash; film school trained (MFA, Tisch), happiest with a call sheet in hand and a story to tell. If you scanned this, you caught me between shoots.</p>
+
+  <h2>What I do</h2>
+  <div class="chips">
+    <span class="chip">Directing</span>
+    <span class="chip">Producing</span>
+    <span class="chip">On-set production work</span>
+  </div>
+
+  <h2>People who hired me</h2>
+  <div class="referral">
+    <p>She ran my two-day shoot like she had done it a hundred times. Calm, fast, kind to the whole crew.</p>
+    <div class="who">&mdash; Marcus, producer</div>
+  </div>
+  <div class="referral">
+    <p>Booked her once, then brought her back for every shoot after. You can hand her a set and stop worrying.</p>
+    <div class="who">&mdash; Elena, director</div>
+  </div>
+  <div class="referral">
+    <p>Showed up early, knew the day before it started, fixed problems before anyone noticed them.</p>
+    <div class="who">&mdash; David, production manager</div>
+  </div>
+
+  <div class="scans">
+    <div class="num" id="scanCount">128</div>
+    <div class="label">Scans this month</div>
+    <div class="note">Nagham sees this number too &mdash; it is how she knows the bag is working.</div>
+  </div>
+
+  <button class="hire" id="hireBtn">Hire / Contact</button>
+  <div class="toast" id="toast">Demo only &mdash; in the real app, this is where the conversation starts.</div>
+
+  <footer>Concept demo. Sample profile shown for illustration.</footer>
+
+<script>
+  document.getElementById('hireBtn').addEventListener('click', function () {
+    var t = document.getElementById('toast');
+    t.style.display = (t.style.display === 'block') ? 'none' : 'block';
+  });
+</script>
+</body>
+</html>
