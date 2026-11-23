@@ -80,6 +80,24 @@
     color: #777;
     margin-bottom: 4px;
   }
+  .building { margin-bottom: 28px; }
+  .building ul { list-style: none; }
+  .building li {
+    font-size: 15px;
+    color: #222;
+    padding: 7px 0 7px 26px;
+    position: relative;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  .building li::before {
+    content: "";
+    position: absolute;
+    left: 0; top: 11px;
+    width: 12px; height: 12px;
+    border: 1.5px solid #111;
+    border-radius: 3px;
+  }
+  .building .note { font-size: 13px; color: #777; margin-top: 10px; }
   h2 {
     font-size: 12px;
     font-weight: 700;
@@ -156,6 +174,16 @@
   <p class="about">Director who works on sets all over New York &mdash; film school trained (MFA, Tisch), happiest with a call sheet in hand and a story to tell. If you scanned this, you caught me between shoots.</p>
 
   <p class="story"><span class="why">Why I wear this bag</span>I graduated with an MFA, but I didn&rsquo;t have the resume to get the jobs.</p>
+
+  <div class="building">
+    <h2>The resume I&rsquo;m building</h2>
+    <ul>
+      <li>Directing credits on short films</li>
+      <li>A produced feature with my name on it</li>
+      <li>A series episode directed by me</li>
+    </ul>
+    <p class="note">This is the resume I wrote for myself when I signed up &mdash; the one I wish I already had. Every scan, every job, every referral here helps me build it.</p>
+  </div>
 
   <h2>What I do</h2>
   <div class="chips">
